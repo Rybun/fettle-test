@@ -1,13 +1,24 @@
-import { Html, Head, Main, NextScript } from 'next/document'
+import Document, { Html, Head, Main, NextScript } from "next/document";
 
-export default function Document() {
+class MyDocument extends Document {
+  render() {
+    const isProd = process.env.NODE_ENV === "production";
+    const repo = process.env.NEXT_PUBLIC_REPO_NAME ?? "";
+    const basePath = isProd && repo ? `/${repo}` : "";
+
     return (
-        <Html className="light">
-            <Head />
-            <body className="dark:bg-gray-800">
-                <Main />
-                <NextScript />
-            </body>
-        </Html>
-    )
+      <Html lang="en">
+        <Head>
+          {/* Favicon desde /public/favicon.ico (con basePath para GitHub Pages) */}
+          <link rel="icon" href={`${basePath}/favicon.ico`} />
+        </Head>
+        <body>
+          <Main />
+          <NextScript />
+        </body>
+      </Html>
+    );
+  }
 }
+
+export default MyDocument;
